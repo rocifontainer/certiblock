@@ -18,7 +18,7 @@ En la blockchain **no se guardan datos personales**: solo la huella y una descri
 | Red | Avalanche Fuji C-Chain (testnet, Chain ID 43113) |
 | Contrato | `0x6BDa55000bd3b3C02aA66088870396443Cb0532C` · [ver en Snowtrace](https://testnet.snowtrace.io/address/0x6BDa55000bd3b3C02aA66088870396443Cb0532C) · código fuente verificado ✔ |
 | Transacción de ejemplo | [emisión del certificado de demo](https://testnet.snowtrace.io/tx/0xdd6858e08cc9403369e0e3608bf66684b95952120de2e363e9c87b7260df9030) |
-| Demo | `PENDIENTE: https://...vercel.app` |
+| Demo | [certiblock-nine.vercel.app](https://certiblock-nine.vercel.app) |
 
 ## Cómo funciona
 

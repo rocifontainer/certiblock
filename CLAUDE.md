@@ -8,8 +8,9 @@ El usuario no es programador: explica en español simple, con analogías de nego
 - [x] Contrato `contracts/contracts/CertiBlock.sol` + 7 pruebas pasando (`cd contracts && npx hardhat test`)
 - [x] Web `web/` (Next.js + wagmi + viem), `npm run build` OK
 - [x] README, PITCH.md, PDFs de demo en `demo/`
-- [ ] Desplegar en Fuji, emitir certificado de demo, completar los "PENDIENTE" del README
-- [ ] Subir a GitHub (público), publicar en Vercel, probar desde otro dispositivo
+- [x] Desplegado en Fuji (0x6BDa55000bd3b3C02aA66088870396443Cb0532C, verificado), certificado de demo emitido, README completo
+- [x] GitHub público (rocifontainer/certiblock) y Vercel (https://certiblock-nine.vercel.app)
+- [ ] Probar la URL pública desde otro dispositivo, con wallet y con el PDF adulterado; grabar video de pitch
 
 ## Pasos que faltan (en orden)
 
