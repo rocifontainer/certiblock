@@ -1,0 +1,23 @@
+# Dependencias y builds
+node_modules/
+.next/
+out/
+dist/
+contracts/artifacts/
+contracts/cache/
+contracts/types/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secretos: NUNCA al repositorio
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+.vercel
+
+# Ignition: los registros de despliegue de Fuji (chain-43113) sí se suben, son evidencia pública
+contracts/ignition/deployments/chain-31337/
+
+.DS_Store

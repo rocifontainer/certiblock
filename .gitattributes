@@ -1,0 +1,2 @@
+# Los PDF de demo no se tocan: si cambian sus bytes, cambia su huella en la blockchain
+*.pdf binary

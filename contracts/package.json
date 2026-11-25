@@ -1,0 +1,29 @@
+{
+  "name": "certiblock-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:fuji": "hardhat ignition deploy ignition/modules/CertiBlock.ts --network fuji",
+    "demo:fuji": "hardhat run scripts/demo.ts --network fuji",
+    "verify:fuji": "hardhat verify --network fuji"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^3.1.10",
+    "@nomicfoundation/hardhat-ignition-viem": "^3.1.6",
+    "@nomicfoundation/hardhat-keystore": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^3.0.0",
+    "@nomicfoundation/hardhat-node-test-runner": "^3.0.0",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
+    "@nomicfoundation/hardhat-verify": "^3.0.0",
+    "@nomicfoundation/hardhat-viem": "^3.0.4",
+    "@nomicfoundation/hardhat-viem-assertions": "^3.0.5",
+    "@nomicfoundation/ignition-core": "^3.0.7",
+    "@types/node": "^22.0.0",
+    "hardhat": "^3.22.0",
+    "typescript": "~5.8.0",
+    "viem": "^2.58.6"
+  }
+}

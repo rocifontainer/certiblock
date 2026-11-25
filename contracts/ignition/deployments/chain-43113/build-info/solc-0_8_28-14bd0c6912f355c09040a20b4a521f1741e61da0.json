@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-14bd0c6912f355c09040a20b4a521f1741e61da0",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.22.0"
+  },
+  "userSourceNameMap": {
+    "contracts/CertiBlock.sol": "project/contracts/CertiBlock.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/CertiBlock.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.28;\n\n/// @title CertiBlock: certificados verificables\n/// @notice Una institución registra la \"huella digital\" (hash SHA-256) de cada\n///         certificado que emite. Cualquiera puede comprobar después que un PDF\n///         fue emitido por esa institución y que no ha sido alterado.\n///         En la cadena NO se guardan datos personales: solo la huella y una descripción.\ncontract CertiBlock {\n    struct Certificado {\n        address emisor;       // wallet de la institución que lo emitió\n        uint64 fechaEmision;  // timestamp del bloque\n        bool revocado;        // la institución puede anularlo\n        string descripcion;   // ej: \"Aprobación curso IN3863 - 2026-2\"\n    }\n\n    address public immutable administrador;\n    uint256 public totalCertificados;\n\n    /// @notice Nombre de cada institución autorizada. Vacío = no autorizada.\n    mapping(address => string) public institucion;\n    mapping(bytes32 => Certificado) private certificados;\n\n    event InstitucionActualizada(address indexed emisor, string nombre);\n    event CertificadoEmitido(bytes32 indexed huella, address indexed emisor, string descripcion);\n    event CertificadoRevocado(bytes32 indexed huella, address indexed emisor);\n\n    error NoAutorizado();\n    error YaEmitido();\n    error NoExiste();\n    error YaRevocado();\n    error DatosVacios();\n\n    modifier soloInstitucion() {\n        if (bytes(institucion[msg.sender]).length == 0) revert NoAutorizado();\n        _;\n    }\n\n    constructor(string memory nombreInstitucion) {\n        if (bytes(nombreInstitucion).length == 0) revert DatosVacios();\n        administrador = msg.sender;\n        institucion[msg.sender] = nombreInstitucion;\n        emit InstitucionActualizada(msg.sender, nombreInstitucion);\n    }\n\n    /// @notice El administrador autoriza una institución (nombre) o la retira (nombre vacío).\n    function setInstitucion(address emisor, string calldata nombre) external {\n        if (msg.sender != administrador) revert NoAutorizado();\n        institucion[emisor] = nombre;\n        emit InstitucionActualizada(emisor, nombre);\n    }\n\n    /// @notice Registra la huella de un certificado. Una huella solo se puede emitir una vez.\n    function emitir(bytes32 huella, string calldata descripcion) external soloInstitucion {\n        if (huella == bytes32(0) || bytes(descripcion).length == 0) revert DatosVacios();\n        if (certificados[huella].emisor != address(0)) revert YaEmitido();\n        certificados[huella] = Certificado(msg.sender, uint64(block.timestamp), false, descripcion);\n        totalCertificados++;\n        emit CertificadoEmitido(huella, msg.sender, descripcion);\n    }\n\n    /// @notice Solo quien emitió el certificado puede revocarlo (por ejemplo, si hubo un error).\n    function revocar(bytes32 huella) external {\n        Certificado storage c = certificados[huella];\n        if (c.emisor == address(0)) revert NoExiste();\n        if (c.emisor != msg.sender) revert NoAutorizado();\n        if (c.revocado) revert YaRevocado();\n        c.revocado = true;\n        emit CertificadoRevocado(huella, msg.sender);\n    }\n\n    /// @notice Verificación pública. Si existe = false, ese documento nunca fue registrado\n    ///         (o fue modificado, porque cualquier cambio altera la huella).\n    function verificar(bytes32 huella)\n        external\n        view\n        returns (\n            bool existe,\n            bool valido,\n            address emisor,\n            string memory nombreInstitucion,\n            uint64 fechaEmision,\n            string memory descripcion\n        )\n    {\n        Certificado storage c = certificados[huella];\n        existe = c.emisor != address(0);\n        valido = existe && !c.revocado;\n        return (existe, valido, c.emisor, institucion[c.emisor], c.fechaEmision, c.descripcion);\n    }\n}\n"
+      }
+    }
+  }
+}
